@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Pelacakan Alumni (OSINT)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <nav class="bg-blue-800 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-white font-bold text-xl">Sistem Pelacakan Alumni Kampus</div>
+            <div class="text-white">Admin Dashboard</div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-8 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="font-bold text-gray-600">Total Alumni</h2>
+                <p class="text-3xl font-bold text-blue-600">1,204</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="font-bold text-gray-600">Teridentifikasi Kuat</h2>
+                <p class="text-3xl font-bold text-green-500" id="stat-teridentifikasi">850</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="font-bold text-gray-600">Belum Dilacak / Perlu Verifikasi</h2>
+                <p class="text-3xl font-bold text-yellow-500" id="stat-pending">354</p>
+            </div>
+        </div>
+
+        <div class="mb-4 flex justify-between items-center">
+            <h3 class="text-xl font-bold text-gray-800">Daftar Target Pelacakan</h3>
+            <button id="btn-lacak" onclick="jalankanPelacakan()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">
+                Jalankan Job Pelacakan (Simulasi)
+            </button>
+        </div>
+
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <table class="min-w-full leading-normal">
+                <thead>
+                    <tr>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama Alumni</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Prodi / Lulus</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status Pelacakan</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Pekerjaan Terbaru (Temuan)</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-alumni">
+                    <tr>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><p class="text-gray-900 whitespace-no-wrap">Muhammad Rizky</p></td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><p class="text-gray-900 whitespace-no-wrap">Informatika / 2021</p></td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><span class="status-badge relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight"><span aria-hidden class="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span><span class="relative">Belum Dilacak</span></span></td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><p class="text-gray-900 whitespace-no-wrap info-pekerjaan">-</p></td>
+                    </tr>
+                    <tr>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><p class="text-gray-900 whitespace-no-wrap">Siti Aminah</p></td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><p class="text-gray-900 whitespace-no-wrap">Manajemen / 2020</p></td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><span class="status-badge relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight"><span aria-hidden class="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span><span class="relative">Belum Dilacak</span></span></td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><p class="text-gray-900 whitespace-no-wrap info-pekerjaan">-</p></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function jalankanPelacakan() {
+            const btn = document.getElementById('btn-lacak');
+            btn.innerText = "Sedang Melacak (Scraping)...";
+            btn.classList.replace('bg-blue-600', 'bg-gray-500');
+            btn.disabled = true;
+
+            // Simulasi delay proses pelacakan 3 detik
+            setTimeout(() => {
+                const badges = document.querySelectorAll('.status-badge');
+                const pekerjaans = document.querySelectorAll('.info-pekerjaan');
+                
+                // Update Rizky
+                badges[0].innerHTML = `<span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span><span class="relative text-green-900">Teridentifikasi Kuat</span>`;
+                pekerjaans[0].innerText = "Software Engineer at TechIndo (LinkedIn)";
+
+                // Update Siti
+                badges[1].innerHTML = `<span aria-hidden class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span><span class="relative text-orange-900">Perlu Verifikasi Manual</span>`;
+                pekerjaans[1].innerText = "HR Staff (Ditemukan 2 profil mirip)";
+
+                // Update Stats
+                document.getElementById('stat-teridentifikasi').innerText = "851";
+                document.getElementById('stat-pending').innerText = "353";
+
+                btn.innerText = "Pelacakan Selesai";
+                btn.classList.replace('bg-gray-500', 'bg-green-600');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
